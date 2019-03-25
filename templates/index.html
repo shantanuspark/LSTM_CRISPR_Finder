@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/styles/main.css">
+    <title>Finding CRISPR arrays</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"> Find CRISPR arrays using LSTM </a>
+        </div>
+    </nav>
+    <br />
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h2 class="display-4">Input sequence:</h2>
+                <p class="lead">
+
+                    <form id="fileinfo" enctype="multipart/form-data">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Upload a sequence file in
+                                    FASTA format</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="seqfile" id="inputGroupFile01"
+                                    aria-describedby="inputGroupFileAddon01" accept=".fasta">
+                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                            </div>
+                        </div>
+                        <center>OR</center>
+                        <br />
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Paste DNA Sequence in FASTA format</span>
+                            </div>
+                            <textarea class="form-control" aria-label="With textarea"></textarea>
+                        </div>
+                        <br />
+                        <center><a class="btn btn-secondary btn-lg" id="findBtn" href="#" role="button">Find CRISPR
+                                Arrays</a></center>
+                    </form>
+                </p>
+            </div>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"> Finding candidate CRISPRs </div>
+        </div>
+        <div id="results">
+            
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-content">
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">&copy; 2019 CRISPR LSTM</div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+
+</body>
+
+</html>
