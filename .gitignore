@@ -2,10 +2,8 @@ static/logos/
 
 .vscode/
 
-.fasta
-
-.json
-
-.jar
+*.fasta
+*.json
+modifiedCRT.jar
 
 
