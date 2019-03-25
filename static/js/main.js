@@ -107,7 +107,7 @@ $(document).ready(function () {
 function displayError(msg) {
     $('#results').html(`
     <div class="alert alert-danger" role="alert">
-    `+ data + `
+    `+ msg + `
     </div>
     `);
     $('#findBtn').removeClass('disabled');
