@@ -1,7 +1,6 @@
-static/logos/
-
 .vscode/
 
+*.png
 *.fasta
 *.json
 modifiedCRT.jar
