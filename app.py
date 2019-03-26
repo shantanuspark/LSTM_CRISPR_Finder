@@ -12,9 +12,7 @@ from keras.preprocessing import sequence
 import json
 from flask import jsonify
 from Bio.Seq import Seq
-from Bio import motifs
-
-# import tensorflow as tf
+from Bio import motifs,SeqIO
 
 app = Flask(__name__)
 
@@ -98,11 +96,32 @@ def filter_candidates(file_name):
    return jsonify(data)
 
 @app.route('/generate_image/<file_name>', methods = ['POST'])
-def your_route(file_name):
+def create_webLogo(file_name):
     repeats = request.get_json()
     m = motifs.create(list(repeats))
     m.weblogo('static/logos/'+str(file_name)+'.png')
     return jsonify('{"success":1}')
 		
+@app.route('/generate_structure/<file_name>', methods = ['POST'])
+def create_2dStructure(file_name):
+   sequence = request.get_json()
+   with open("uploaded_sequences/"+file_name+".fasta", "w") as output_handle:
+      output_handle.write(">repeat\n"+sequence['seq'])
+
+   if os.path.isfile('uploaded_sequences/'+file_name+'.fasta'):
+      print('file found', 'uploaded_sequences/'+file_name+'.fasta')
+      subprocess.call(['C:\Program Files\RNAstructure6.1\exe\Fold', 'uploaded_sequences/'+file_name+'.fasta', 'uploaded_sequences/'+file_name+'.ct',
+       '--DNA', '--loop' , '30', '--maximum', '20', '--percent', '10', '--temperature', '310.15', '--window', '3'])
+   else:
+      raise Exception()
+
+   if os.path.isfile('uploaded_sequences/'+file_name+'.ct'):
+      subprocess.call(['C:\Program Files\RNAstructure6.1\exe\draw', 'uploaded_sequences/'+file_name+'.ct', 'static/logos/'+file_name+'.svg',
+       '--svg', '-n' , '1'])
+   else:
+      raise Exception()
+
+   return jsonify('{"success":1}')
+
 if __name__ == '__main__':
    app.run(host='0.0.0.0')

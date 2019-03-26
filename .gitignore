@@ -3,6 +3,9 @@
 *.png
 *.fasta
 *.json
+*.svg
+*.ct
+
 modifiedCRT.jar
 
 

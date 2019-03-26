@@ -64,7 +64,6 @@ $(document).ready(function () {
 
     $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var id = button.data('ciripr-id') // Extract info from data-* attributes
 
         $('#modal-content').html(`
         <div class="text-center">
@@ -73,32 +72,58 @@ $(document).ready(function () {
             </div>
         </div>
         `);
-        var repeats = []
-        crisprData[id]['spacerRepeat'].forEach(function(value){
-            repeats.push(value['repeat']);
-        });
         
         var modal = $(this)
 
-        $.ajax({
-            url: '/generate_image/' + fileID,
-            type: 'POST',
-            data: JSON.stringify(repeats),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (d) {
-                console.log('success')
-                modal.find('#modal-content').html(`
-                <div class="text-center">
-                    <img src="static/logos/`+fileID+`.png" class="img-fluid" />
-                </div>
-                `);
-            },
-            failure: function (d){
-                console.log('error')
-            }
-        });
-
+        switch(button.data('modal-type')){
+        case("Repeat Weblogo"):
+            var id = button.data('ciripr-id') // Extract info from data-* attributes
+            var repeats = []
+            crisprData[id]['spacerRepeat'].forEach(function(value){
+                repeats.push(value['repeat']);
+            });
+            $.ajax({
+                url: '/generate_image/' + fileID,
+                type: 'POST',
+                data: JSON.stringify(repeats),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    console.log('success')
+                    modal.find('#modal-content').html(`
+                    <div class="text-center">
+                        <img src="static/logos/`+fileID+`.png" class="img-fluid" />
+                    </div>
+                    `);
+                },
+                failure: function (d){
+                    console.log('error')
+                }
+            });
+            break;
+        case("Sequence Structure"):
+            var crSeq = button.data('ciripr-seq') // Extract info from data-* attributes
+            var rand = Math.floor(Math.random() * 1000);
+            $.ajax({
+                url: '/generate_structure/' + fileID+'_'+rand,
+                type: 'POST',
+                data: JSON.stringify({"seq":crSeq}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    console.log('success')
+                    modal.find('#modal-content').html(`
+                    <div class="text-center">
+                    <img src="static/logos/`+fileID+`_`+rand+`.svg" type="image/svg+xml" />
+                    </div>
+                    `);
+                },
+                failure: function (d){
+                    console.log('error')
+                }
+            });
+            break;
+        }
         modal.find('.modal-title').text(button.data('modal-type'))
     })
 
@@ -221,16 +246,19 @@ function getTables(isValid, data) {
             value['spacerRepeat'].forEach(function (value, i) {
                 if (value['spacer']) {
                     table_content += `<tr>
-                            <td scope="row">`+ value['repeat'] + `</td>
+                            <td scope="row"><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" data-ciripr-seq="`+value['repeat'].trim()+`
+                            " data-modal-type="Sequence Structure" data-file-name=`+fileID+`>`+ value['repeat'] + `</button></td>
                             <td>`+ value['position'] + `</td>
                             <td>`+ value['lengths'][0] + `</td>
-                            <td class="table-secondary">`+ value['spacer'] + `</td>
+                            <td class="table-secondary"><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" data-ciripr-seq="`+value['spacer'].trim()+`
+                            " data-modal-type="Sequence Structure" data-file-name=`+fileID+`>`+ value['spacer'] + `</button></td>
                             <td class="table-secondary">`+ (value['position']+value['lengths'][0]) + `</td>
                             <td class="table-secondary">`+ value['lengths'][1] + `</td>
                         </tr>`;
                 } else {
                     table_content += `<tr>
-                            <td scope="row">`+ value['repeat'] + `</td>
+                            <td scope="row"><button type="button" class="btn btn-sm" data-toggle="modal" data-target="#exampleModal" data-ciripr-seq="`+value['repeat'].trim()+`
+                            " data-modal-type="Sequence Structure" data-file-name=`+fileID+`>`+ value['repeat'] + `</button></td>
                             <td>`+ value['position'] + `</td>
                             <td>`+ value['repeat'].length + `</td>
                             <td class="table-secondary">-</td>
