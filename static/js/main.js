@@ -115,7 +115,8 @@ $(document).ready(function () {
                     modal.find('#modal-content').html(`
                     <div class="text-center">
                     <img src="static/logos/`+fileID+`_`+rand+`.svg" type="image/svg+xml" />
-                    </div>
+                    <a target="_blank" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Put&QUERY=`+crSeq+`&PROGRAM=blastn&FORMAT_TYPE=html&DATABASE=nr" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Blast on NCBI</a>
+                    </div>                    
                     `);
                 },
                 failure: function (d){
