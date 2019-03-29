@@ -13,6 +13,8 @@ import json
 from flask import jsonify
 from Bio.Seq import Seq
 from Bio import motifs,SeqIO
+from dna_features_viewer import GraphicFeature, GraphicRecord, CircularGraphicRecord
+
 
 app = Flask(__name__)
 
@@ -101,6 +103,25 @@ def create_webLogo(file_name):
     m = motifs.create(list(repeats))
     m.weblogo('static/logos/'+str(file_name)+'.png')
     return jsonify('{"success":1}')
+
+@app.route('/generate_dna_struct/<file_name>', methods = ['POST'])
+def create_dna_structure(file_name):
+   results = request.get_json()
+   features = []
+   for i, spacerRepeat in enumerate(results['spacerRepeats']):
+      features.append(GraphicFeature(start=spacerRepeat['position'], end=spacerRepeat['position']+len(spacerRepeat['repeat']), 
+                  strand=+1, color="#cffccc", label="Repeat_"+str(i+1)))
+      if 'spacer' in spacerRepeat:
+         features.append(GraphicFeature(start=spacerRepeat['position']+len(spacerRepeat['repeat'])+1, 
+         end=spacerRepeat['position']+len(spacerRepeat['repeat'])+spacerRepeat['lengths'][1], strand=+1, color="#ccccff",
+                   label="Spacer_"+str(i+1)))
+   record = GraphicRecord(sequence_length=results['length'], features=features)
+   record = record.crop((results['spacerRepeats'][0]['position']-50, 
+      results['spacerRepeats'][len(results['spacerRepeats'])-1]['position']+
+      len(results['spacerRepeats'][len(results['spacerRepeats'])-1]['repeat'])+50))
+   ax, _ = record.plot(figure_width=10)
+   ax.figure.savefig('static/logos/'+str(file_name)+'.png', bbox_inches='tight')
+   return jsonify('{"success":1}')
 		
 @app.route('/generate_structure/<file_name>', methods = ['POST'])
 def create_2dStructure(file_name):

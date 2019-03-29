@@ -89,7 +89,6 @@ $(document).ready(function () {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (d) {
-                    console.log('success')
                     modal.find('#modal-content').html(`
                     <div class="text-center">
                         <img src="static/logos/`+fileID+`.png" class="img-fluid" />
@@ -111,7 +110,6 @@ $(document).ready(function () {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (d) {
-                    console.log('success')
                     modal.find('#modal-content').html(`
                     <div class="text-center">
                     <img src="static/logos/`+fileID+`_`+rand+`.svg" type="image/svg+xml" />
@@ -122,8 +120,33 @@ $(document).ready(function () {
                 failure: function (d){
                     console.log('error')
                 }
-            });
+            }); 
             break;
+        case("CRISPR Structure"):
+            var id = button.data('ciripr-id') // Extract info from data-* attributes
+            var repeats = []
+            requestJson = {}
+            requestJson['spacerRepeats'] = crisprData[id]['spacerRepeat'];
+            requestJson['length'] = button.data('crispr-length')
+            var rand = Math.floor(Math.random() * 1000);
+            $.ajax({
+                url: '/generate_dna_struct/' + fileID+'_'+rand,
+                type: 'POST',
+                data: JSON.stringify(requestJson),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (d) {
+                    modal.find('#modal-content').html(`
+                    <div class="text-center">
+                        <img src="static/logos/`+fileID+`_`+rand+`.png" class="img-fluid" />
+                    </div>
+                    `);
+                },
+                failure: function (d){
+                    console.log('error')
+                }
+            });
+        break;
         }
         modal.find('.modal-title').text(button.data('modal-type'))
     })
@@ -160,7 +183,6 @@ function createResults(data) {
     </p>
     </div>
     <div id="accordion">`
-
     content += getTables(true, data);
     content+=`<br/>`
     content+=getTables(false, data);
@@ -271,8 +293,8 @@ function getTables(isValid, data) {
             table_content += `</tbody></table></div>
         <button type="button" class="btn btn-secondary " data-toggle="modal"
             data-target="#exampleModal" data-ciripr-id="`+i+`" data-modal-type="Repeat Weblogo" data-file-name=`+fileID+`>Repeat weblogo</button>
-        <button type="button" class="btn btn-secondary " data-toggle="modal"
-            data-target="#exampleModal" data-whatever="@fat">CRISPR Structure</button>
+            <button type="button" class="btn btn-secondary " data-toggle="modal"
+            data-target="#exampleModal" data-ciripr-id="`+i+`" data-crispr-length="`+data['noOfBases']+`" data-modal-type="CRISPR Structure" data-file-name=`+fileID+`>CRISPR Structure</button>
             </p>
             </div>
         </div>`}
