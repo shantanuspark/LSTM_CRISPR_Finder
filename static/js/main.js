@@ -57,7 +57,7 @@ $(document).ready(function () {
         $('#findBtn').addClass('disabled');
         $('#results').html("");
         $('.progress-bar').css('width', '25%');
-        $('.progress-bar').html('Uploading the fasta file');
+        $('.progress-bar').html('Getting the FASTA data');
         $('.progress').show();
 
         // Upload sequence file
