@@ -51,12 +51,17 @@ def render_index():
 @app.route('/uploader', methods = ['POST'])
 def upload_file():
    if request.method == 'POST':
-      try:
-         f = request.files['seqfile']
-         filename = str(randomDigits(9))+"."+f.filename.split('.')[-1]
-         f.save('uploaded_sequences/'+secure_filename(filename))
-      except:
-         return 'File Upload Error', 400
+      if request.form.get('fasta-sequence')!='':
+         filename = str(randomDigits(9))+".fasta"
+         with open('uploaded_sequences/'+filename,"w+") as f:
+            f.write(request.form.get('fasta-sequence'))
+      else:
+         try:
+            f = request.files['seqfile']
+            filename = str(randomDigits(9))+"."+f.filename.split('.')[-1]
+            f.save('uploaded_sequences/'+secure_filename(filename))
+         except:
+            return 'File Upload Error', 400
       return filename.split('.')[0]
 
 @app.route('/get_candidates/<file_name>', methods = ['GET'])
@@ -72,8 +77,11 @@ def get_candidates(file_name):
 
 @app.route('/filter_candidates/<file_name>', methods = ['GET'])
 def filter_candidates(file_name):
-   with open('output'+file_name+'.json') as f:
-      data = json.load(f)
+   try:
+      with open('output'+file_name+'.json') as f:
+         data = json.load(f)
+   except:
+      return jsonify({'error':'No CRISPR arrays found in the input sequence!'})
    validCrisprs=0
    start_time = time.time()
    for crispr in data['CRISPRs']:
@@ -144,5 +152,16 @@ def create_2dStructure(file_name):
 
    return jsonify('{"success":1}')
 
+@app.route('/get_content/<file_name>', methods = ['GET'])
+def get_content(file_name):
+   content = ''
+   try:
+      with open("static/examples/"+file_name+".txt", 'r') as f:
+         content = f.read()
+   except Exception as e:
+      return 'Getting content error: '+str(e),500
+   return content
+
 if __name__ == '__main__':
-   app.run(host='0.0.0.0')
+   app.run(host='0.0.0.0', debug=True)
+  

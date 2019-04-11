@@ -44,20 +44,43 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Paste DNA Sequence in FASTA format</span>
                             </div>
-                            <textarea class="form-control" aria-label="With textarea"></textarea>
+                            <textarea id="fasta-sequence" name="fasta-sequence" class="form-control"
+                                aria-label="With textarea"></textarea>
                         </div>
                         <br />
-                        <center><a class="btn btn-secondary btn-lg" id="findBtn" href="#" role="button">Find CRISPR
-                                Arrays</a></center>
+                        <br />
+                            <div class="row justify-content-center">
+                                    <div class="col-3">
+                            <a class="btn btn-secondary btn-lg" id="findBtn" href="#" role="button">Find CRISPR
+                                Arrays</a>
+                                    </div>
+                                    <div class="col-3">
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary btn-lg dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <div class="spinner-border text-secondary" role="status" id="spinner">
+                                            <span class="sr-only">...</span>
+                                          </div>
+                                    Example Sequences
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" id="example_sp"><i>Sp. Pyogenese</i>  M1 GAS</a>
+                                    <a class="dropdown-item" id="example_cb"><i>C. botulinum </i>CDC 297</a>
+                                    <a class="dropdown-item" id="example_mb"><i> M. bathoardescens</i> strain JH146</a>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
                     </form>
                 </p>
             </div>
         </div>
         <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"> Finding candidate CRISPRs </div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-secondary"> Finding candidate CRISPRs
+            </div>
         </div>
         <div id="results">
-            
+
         </div>
 
     </div>
@@ -89,13 +112,10 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
 
 </body>
 

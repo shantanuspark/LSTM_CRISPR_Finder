@@ -1,6 +1,56 @@
 var crisprData;
 var fileID;
 $(document).ready(function () {
+    $("#spinner").hide();
+
+    $("#example_sp").click(function () {
+        $("#spinner").show();
+        $.ajax({
+            url: '/get_content/sp',
+            type: 'GET',
+            success: function (data) {
+                $("#fasta-sequence").val(data)
+                $("#spinner").hide();
+            },
+            error: function (data) {
+                displayError('Sorry, cannot get the example sequence');
+                $("#spinner").hide();
+            }
+        });
+    });
+
+    $("#example_cb").click(function () {
+        $("#spinner").show();
+        $.ajax({
+            url: '/get_content/cdc297',
+            type: 'GET',
+            success: function (data) {
+                $("#fasta-sequence").val(data)
+                $("#spinner").hide();
+            },
+            error: function (data) {
+                displayError('Sorry, cannot get the example sequence');
+                $("#spinner").hide();
+            }
+        });
+    });
+
+    $("#example_mb").click(function () {
+        $("#spinner").show();
+        $.ajax({
+            url: '/get_content/jh146',
+            type: 'GET',
+            success: function (data) {
+                $("#fasta-sequence").val(data)
+                $("#spinner").hide();
+            },
+            error: function (data) {
+                displayError('Sorry, cannot get the example sequence');
+                $("#spinner").hide();
+            }
+        });
+    });
+
     $('.progress').hide();
     $("#findBtn").click(function () {
         //Clear result section and show progress bar
@@ -12,6 +62,7 @@ $(document).ready(function () {
 
         // Upload sequence file
         var fd = new FormData($("#fileinfo")[0]);
+
         $.ajax({
             url: '/uploader',
             type: 'POST',
@@ -30,6 +81,10 @@ $(document).ready(function () {
                             url: '/filter_candidates/' + data,
                             type: 'GET',
                             success: function (data) {
+                                if('error' in data){
+                                    displayError(data['error']);
+                                    return
+                                }
                                 $('.progress-bar').html('All done, displaying results!');
                                 $('.progress-bar').css('width', '99%');
                                 displayResult(data);
@@ -160,11 +215,13 @@ function displayError(msg) {
     </div>
     `);
     $('#findBtn').removeClass('disabled');
+    $("#fasta-sequence").val("");
     $('.progress').hide();
 }
 
 function displayResult(data) {
-    $('#findBtn').removeClass('disabled');
+    $("#findBtn").removeClass('disabled');
+    $("#fasta-sequence").val("");
     $('.progress').hide();
     $('#results').html(createResults(data));
 }
