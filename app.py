@@ -26,7 +26,7 @@ model = load_model('static/repeat_validator_model.h5')
 # loading
 with open('static/dna_tokenizer.pickle', 'rb') as handle:
     tok = pickle.load(handle)
-validation_threshold = 0.7
+validation_threshold = 0.5
 
 def randomDigits(digits):
     lower = 10**(digits-1)
@@ -163,5 +163,5 @@ def get_content(file_name):
    return content
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', debug=True)
+   app.run(host='0.0.0.0', debug=False)
   
