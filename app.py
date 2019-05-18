@@ -21,12 +21,12 @@ app = Flask(__name__)
 # model = load_model('static/repeat_validator_model.h5')
 # model._make_predict_function()
 # graph = tf.get_default_graph()
-model = load_model('static/repeat_validator_model.h5')
+model = load_model('static/repeat_validator_43_new_ds_16_e.h5')
 
 # loading
 with open('static/dna_tokenizer.pickle', 'rb') as handle:
     tok = pickle.load(handle)
-validation_threshold = 0.5
+validation_threshold = 0.7
 
 def randomDigits(digits):
     lower = 10**(digits-1)
