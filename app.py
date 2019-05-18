@@ -22,11 +22,12 @@ app = Flask(__name__)
 # model._make_predict_function()
 # graph = tf.get_default_graph()
 model = load_model('static/repeat_validator_43_new_ds_16_e.h5')
+input_len = 43
+validation_threshold = 0.7
 
 # loading
 with open('static/dna_tokenizer.pickle', 'rb') as handle:
     tok = pickle.load(handle)
-validation_threshold = 0.7
 
 def randomDigits(digits):
     lower = 10**(digits-1)
@@ -35,7 +36,7 @@ def randomDigits(digits):
 
 def get_validation_score(repeat):
    tsp = tok.texts_to_sequences([repeat])
-   tsp_matrix = sequence.pad_sequences(tsp,maxlen=45)
+   tsp_matrix = sequence.pad_sequences(tsp,maxlen=input_len)
    # with graph.as_default():
       # score = model.predict(tsp_matrix)
    score = model.predict(tsp_matrix)
