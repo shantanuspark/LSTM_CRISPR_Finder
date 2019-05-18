@@ -79,7 +79,8 @@ def get_candidates(file_name):
 @app.route('/filter_candidates/<file_name>', methods = ['GET'])
 def filter_candidates(file_name):
    try:
-      with open('output'+file_name+'.json') as f:
+      # with open('output'+file_name+'.json') as f:
+      with open('output.json') as f:
          data = json.load(f)
    except:
       return jsonify({'error':'No CRISPR arrays found in the input sequence!'})
