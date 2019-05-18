@@ -3,6 +3,23 @@ var fileID;
 $(document).ready(function () {
     $("#spinner").hide();
 
+    $(".example").click(function () {
+        $("#spinner").show();
+        file_name = this.getAttribute('class').split(' ')[1];
+        $.ajax({
+            url: '/get_content/'+file_name,
+            type: 'GET',
+            success: function (data) {
+                $("#fasta-sequence").val(data)
+                $("#spinner").hide();
+            },
+            error: function (data) {
+                displayError('Sorry, cannot get the example sequence');
+                $("#spinner").hide();
+            }
+        });
+    });
+
     $("#example_sp").click(function () {
         $("#spinner").show();
         $.ajax({

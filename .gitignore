@@ -1,7 +1,8 @@
 .vscode/
 
+uploaded_sequences/
+
 *.png
-*.fasta
 *.json
 *.svg
 *.ct

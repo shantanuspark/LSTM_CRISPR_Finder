@@ -156,12 +156,12 @@ def create_2dStructure(file_name):
 def get_content(file_name):
    content = ''
    try:
-      with open("static/examples/"+file_name+".txt", 'r') as f:
+      with open("static/examples/"+file_name+".fasta", 'r') as f:
          content = f.read()
    except Exception as e:
       return 'Getting content error: '+str(e),500
    return content
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', debug=False)
+   app.run(host='0.0.0.0', debug=True)
   
