@@ -120,6 +120,8 @@ def filter_candidates(file_name, spacer_length_relaxation = 1):
             continue
          spacers.append(spacer_repeat['spacer'])
       crispr['isValid'] = is_spacer_length_valid(spacers, spacer_length_relaxation)
+      if not crispr['isValid']:
+         validCrisprs-=1
    end_time = time.time()
    data['validCrisprs'] = validCrisprs
    data['timeTaken']+=end_time-start_time
@@ -183,5 +185,5 @@ def get_content(file_name):
    return content
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', debug=True, port=80)
+   app.run(host='0.0.0.0', debug=False, port=80)
   
