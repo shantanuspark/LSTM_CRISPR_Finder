@@ -1,4 +1,4 @@
-import os
+import os, sys
 os.environ['KERAS_BACKEND'] = 'theano'
 from flask import Flask, render_template, request
 from werkzeug import secure_filename
@@ -42,6 +42,17 @@ def get_validation_score(repeat):
    score = model.predict(tsp_matrix)
    return score[0][0]
 
+def is_spacer_length_valid(spacers, spacer_length_relaxation=1):
+    min_length = sys.maxsize
+    max_length = 0
+    for spacer in spacers:
+        len_spacer = len(spacer)
+        if len_spacer<min_length:
+            min_length = len_spacer
+        if len_spacer>max_length:
+            max_length = len_spacer
+    return max_length - min_length <= spacer_length_relaxation
+
 '''
 Referred from https://www.tutorialspoint.com/flask/flask_file_uploading.htm
 '''
@@ -77,7 +88,7 @@ def get_candidates(file_name):
    return file_name
 
 @app.route('/filter_candidates/<file_name>', methods = ['GET'])
-def filter_candidates(file_name):
+def filter_candidates(file_name, spacer_length_relaxation = 1):
    try:
       # with open('output'+file_name+'.json') as f:
       with open('output.json') as f:
@@ -102,6 +113,13 @@ def filter_candidates(file_name):
          crispr['consensusRepeat'] = str(pwm.consensus)
       else:
          crispr['isValid'] = False
+   if crispr['isValid']:
+      spacers = []
+      for spacer_repeat in crispr['spacerRepeat']:
+         if 'spacer' not in spacer_repeat:
+            continue
+         spacers.append(spacer_repeat['spacer'])
+      crispr['isValid'] = is_spacer_length_valid(spacers, spacer_length_relaxation)
    end_time = time.time()
    data['validCrisprs'] = validCrisprs
    data['timeTaken']+=end_time-start_time
@@ -165,5 +183,5 @@ def get_content(file_name):
    return content
 
 if __name__ == '__main__':
-   app.run(host='0.0.0.0', debug=False, port=80)
+   app.run(host='0.0.0.0', debug=True, port=80)
   

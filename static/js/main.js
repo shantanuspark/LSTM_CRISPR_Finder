@@ -163,7 +163,7 @@ $(document).ready(function () {
                 success: function (d) {
                     modal.find('#modal-content').html(`
                     <div class="text-center">
-                        <img src="static/logos/`+fileID+`.png" class="img-fluid" />
+                        <img src="static/logos/`+fileID+`.png?nocache=`+Math.random()+`" class="img-fluid" />
                     </div>
                     `);
                 },
