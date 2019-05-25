@@ -88,7 +88,7 @@ def get_candidates(file_name):
    return file_name
 
 @app.route('/filter_candidates/<file_name>', methods = ['GET'])
-def filter_candidates(file_name, spacer_length_relaxation = 1):
+def filter_candidates(file_name, spacer_length_relaxation = 100):
    try:
       # with open('output'+file_name+'.json') as f:
       with open('output.json') as f:
@@ -113,15 +113,15 @@ def filter_candidates(file_name, spacer_length_relaxation = 1):
          crispr['consensusRepeat'] = str(pwm.consensus)
       else:
          crispr['isValid'] = False
-      if crispr['isValid']:
-         spacers = []
-         for spacer_repeat in crispr['spacerRepeat']:
-            if 'spacer' not in spacer_repeat:
-               continue
-            spacers.append(spacer_repeat['spacer'])
-         crispr['isValid'] = is_spacer_length_valid(spacers, spacer_length_relaxation)
-         if not crispr['isValid']:
-            validCrisprs-=1
+      # if crispr['isValid']:
+      #    spacers = []
+      #    for spacer_repeat in crispr['spacerRepeat']:
+      #       if 'spacer' not in spacer_repeat:
+      #          continue
+      #       spacers.append(spacer_repeat['spacer'])
+      #    crispr['isValid'] = is_spacer_length_valid(spacers, spacer_length_relaxation)
+      #    if not crispr['isValid']:
+      #       validCrisprs-=1
    end_time = time.time()
    data['validCrisprs'] = validCrisprs
    data['timeTaken']+=end_time-start_time
