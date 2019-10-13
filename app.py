@@ -80,9 +80,9 @@ def upload_file():
 def get_candidates(file_name):
    try:
       if os.path.isfile('uploaded_sequences/'+file_name+'.fasta'):
-         subprocess.call(['java', '-jar', 'modifiedCRT.jar', '-requestID', str(int(file_name)) ,'uploaded_sequences/'+file_name+'.fasta'])
+         subprocess.call(['java', '-jar', 'modifiedCRT.jar', 'uploaded_sequences/'+file_name+'.fasta', str(int(file_name))])
       else:
-         raise Exception()
+         raise Exception('path not found')
    except Exception as e:
       return 'CRT Candidate Extraction error'+str(e),500
    return file_name
@@ -90,8 +90,8 @@ def get_candidates(file_name):
 @app.route('/filter_candidates/<file_name>', methods = ['GET'])
 def filter_candidates(file_name, spacer_length_relaxation = 100):
    try:
-      # with open('output'+file_name+'.json') as f:
-      with open('output.json') as f:
+      # with open('output.json') as f:
+      with open(file_name) as f:
          data = json.load(f)
    except:
       return jsonify({'error':'No CRISPR arrays found in the input sequence!'})
