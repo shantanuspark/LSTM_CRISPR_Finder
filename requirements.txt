@@ -6,7 +6,7 @@ astor==0.6.2
 astroid==2.0.4
 attrs==19.1.0
 Automat==0.7.0
-Babel==2.6.0
+Babel==2.9.1
 backcall==0.1.0
 backports.weakref==1.0.post1
 biopython==1.72
